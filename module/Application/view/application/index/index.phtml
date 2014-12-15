@@ -1,0 +1,110 @@
+
+    <div class="jumbotron">
+      <div class="container">
+        <h1><?php echo $this->translate($this->loremIpsum(4)); ?></h1>
+        <h3>
+            <?php echo $this->translate($this->loremIpsum(28, true)); ?>
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="box">
+          <div class="box-icon box-icon-green">
+            <span class="fa fa-4x fa-calendar"></span>
+          </div>
+          <div class="info">
+            <h3 class="text-center"><?php echo $this->translate('Schedule an Appointment'); ?></h3>
+            <p>
+                <?php echo $this->translate($this->loremIpsum(25, true)); ?>
+            </p>
+            <p><a class="btn btn-default" href="<?php //echo $this->url('schedule'); ?>" role="button"><?php echo $this->translate('Schedule'); ?> &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="box">
+          <div class="box-icon box-icon-blue">
+            <span class="fa fa-4x fa-info"></span>
+          </div>
+          <div class="info">
+            <h3 class="text-center"><?php echo $this->translate('About Us'); ?></h3>
+            <p>
+                <?php echo $this->translate($this->loremIpsum(25, true)); ?>
+            </p>
+            <p><a class="btn btn-default" href="<?php //echo $this->url('about'); ?>" role="button"><?php echo $this->translate('Learn more'); ?> &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="box">
+          <div class="box-icon box-icon-red">
+            <span class="fa fa-4x fa-file-text"></span>
+          </div>
+          <div class="info">
+            <h3 class="text-center"><?php echo $this->translate('Download Forms'); ?></h3>
+            <p>
+                <?php echo $this->translate($this->loremIpsum(20, true)); ?>
+            </p>
+            <p><a class="btn btn-default" href="#" role="button"><?php echo $this->translate('Download'); ?> &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+          <?php for ($i = 0; $i < 3; $i++): ?>
+          <div class="item<?php if (!$i): ?> active<?php endif; ?>">
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="thumbnail adjust1">
+                  <div class="col-md-2 col-sm-2 col-xs-12">
+                    <img class="media-object img-rounded img-responsive" src="http://placehold.it/100" alt="" />
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-12">
+                    <div class="caption">
+                      <p class="text-info lead adjust2"><?php echo $this->escapeHtml($this->translate($this->loremIpsum(7, true))); ?></p>
+                      <p>
+                        <span class="glyphicon glyphicon-thumbs-up"></span>
+                        <?php echo $this->escapeHtml($this->translate($this->loremIpsum(12, true))); ?>
+                      </p>
+                      <blockquote class="adjust2">
+                        <p><?php echo $this->escapeHtml($this->loremIpsum(2, true)); ?>
+                        <small>
+                          <cite title="Source Title">
+                            <i class="glyphicon glyphicon-globe"></i>
+                            www.<?php echo $this->escapeHtml($this->loremIpsum(1, true)); ?>com
+                          </cite>
+                        </small>
+                      </blockquote>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <?php endfor; ?>
+        </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>
+    </div>
+
