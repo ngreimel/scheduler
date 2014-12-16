@@ -1,0 +1,31 @@
+<?php
+/**
+ * Scheduler Module
+ *
+ * @author      Neal Greimel <neal@greimel.us>
+ * @copyright   Copyright (c) 2014 Neal Greimel (http://neal.greimel.us)
+ */
+
+$title = 'Delete appointment';
+$this->headTitle($title);
+
+$url = $this->url('scheduler', array(
+    'action' => 'delete',
+    'id'     => $this->id,
+));
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>
+  Are you sure that you want to delete your appointment on
+  '<?php echo $appointment->date->format('Y-m-d') . ($appointment->time ? ' @ ' . $appointment->time->format('g:i:s a') : ''); ?>'?
+</p>
+
+<form action="<?php echo $url; ?>" method="post" role="form">
+  <div class="form-group">
+    <input type="hidden" name="id" value="<?php echo (int) $appointment->id; ?>" />
+    <button type="submit" name="del" class="btn btn-primary" value="Yes">Yes</button>
+    <button type="submit" name="del" class="btn btn-default" value="No">No</button>
+  </div>
+</form>
