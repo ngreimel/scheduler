@@ -1,10 +1,20 @@
 <?php
+/**
+ * Scheduler Application Config
+ *
+ * @author      Neal Greimel <neal@greimel.us>
+ * @copyright   Copyright (c) 2014 Neal Greimel (http://neal.greimel.us)
+ */
+
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
-        'Application',
-        'CacheBust',
+        'ZendDeveloperTools',
+        'DoctrineModule',
+        'DoctrineORMModule',
         'LoremIpsum',
+        'CacheBust',
+        'Application',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
