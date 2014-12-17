@@ -14,21 +14,20 @@ use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-use Scheduler\Entity\Location;
-use Scheduler\Entity\User;
-
 /**
- * An appointment.
+ * A user.
  *
  * @ORM\Entity
- * @ORM\Table(name="appointment")
- * @property int      $id
- * @property text     $rei
- * @property text     $work_description
- * @property Location $location
- * @property User     $user
+ * @ORM\Table(name="user")
+ * @property int  $id
+ * @property text $email
+ * @property text $first_name
+ * @property text $last_name
+ * @property text $phone
+ * @property int  $status
+ * @property int  $role
  */
-class Appointment implements InputFilterAwareInterface
+class User implements InputFilterAwareInterface
 {
     protected $inputFilter;
 
@@ -42,22 +41,32 @@ class Appointment implements InputFilterAwareInterface
     /**
      * @ORM\Column(type="text", length=60)
      */
-    protected $rei;
+    protected $email;
 
     /**
-     * @ORM\Column(type="text", length=255)
+     * @ORM\Column(type="text", length=45)
      */
-    protected $work_description;
+    protected $first_name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Location")
+     * @ORM\Column(type="text", length=45)
      */
-    protected $location;
+    protected $last_name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\Column(type="text", length=45)
      */
-    protected $user;
+    protected $phone;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $status;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $role;
 
 
     /**
@@ -76,7 +85,7 @@ class Appointment implements InputFilterAwareInterface
      *
      * @param string $property
      * @param mixed $value
-     * @return Appointment
+     * @return User
      */
     public function __set($property, $value)
     {
@@ -98,15 +107,17 @@ class Appointment implements InputFilterAwareInterface
      * Populate from an array.
      *
      * @param array $data
-     * @return Appointment
+     * @return User
      */
     public function exchangeArray($data = array())
     {
-        $this->id               = $data['id'];
-        $this->rei              = $data['rei'];
-        $this->work_description = $data['work_description'];
-        $this->location         = $data['location'];
-        $this->user             = $data['user'];
+        $this->id         = $data['id'];
+        $this->email      = $data['email'];
+        $this->first_name = $data['first_name'];
+        $this->last_name  = $data['last_name'];
+        $this->phone      = $data['phone'];
+        $this->status     = $data['status'];
+        $this->role       = $data['role'];
 
         return $this;
     }
@@ -130,7 +141,19 @@ class Appointment implements InputFilterAwareInterface
             ));
 
             $inputFilter->add(array(
-                'name'     => 'rei',
+                'name'     => 'email',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'EmailAddress'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'first_name',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -149,7 +172,7 @@ class Appointment implements InputFilterAwareInterface
             ));
 
             $inputFilter->add(array(
-                'name'     => 'work_description',
+                'name'     => 'last_name',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -161,22 +184,41 @@ class Appointment implements InputFilterAwareInterface
                         'name' => 'StringLength',
                         'options' => array(
                             'min' => 1,
-                            'max' => 255,
+                            'max' => 45,
                         ),
                     ),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name'     => 'location_id',
+                'name'     => 'phone',
                 'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'NotEmpty'),
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'min' => 10,
+                            'max' => 45,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name'     => 'status',
+                'required' => false,
                 'filters'  => array(
                     array('name' => 'Int'),
                 ),
             ));
 
             $inputFilter->add(array(
-                'name'     => 'user_id',
+                'name'     => 'role',
                 'required' => false,
                 'filters'  => array(
                     array('name' => 'Int'),
