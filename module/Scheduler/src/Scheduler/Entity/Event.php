@@ -9,12 +9,6 @@
 namespace Scheduler\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
-
-use Scheduler\Entity\Appointment;
 
 /**
  * An event.
@@ -28,10 +22,8 @@ use Scheduler\Entity\Appointment;
  * @property Appointment $appointment
  * @property int         $status
  */
-class Event implements InputFilterAwareInterface
+class Event
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -115,53 +107,5 @@ class Event implements InputFilterAwareInterface
         $this->status      = $data['status'];
 
         return $this;
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'time',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'Date'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'date',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'Date'),
-                ),
-            ));
-
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
     }
 }

@@ -9,13 +9,9 @@
 namespace Scheduler\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 
-use Scheduler\Entity\Location;
-use Scheduler\Entity\User;
+#use Scheduler\Entity\Location;
+#use Scheduler\Entity\User;
 
 /**
  * An appointment.
@@ -28,10 +24,8 @@ use Scheduler\Entity\User;
  * @property Location $location
  * @property User     $user
  */
-class Appointment implements InputFilterAwareInterface
+class Appointment
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -109,83 +103,5 @@ class Appointment implements InputFilterAwareInterface
         $this->user             = $data['user'];
 
         return $this;
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'rei',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'work_description',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 255,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'location_id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'user_id',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
     }
 }

@@ -9,10 +9,6 @@
 namespace Scheduler\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 /**
  * A user.
@@ -27,7 +23,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property int  $status
  * @property int  $role
  */
-class User implements InputFilterAwareInterface
+class User
 {
     protected $inputFilter;
 
@@ -120,114 +116,5 @@ class User implements InputFilterAwareInterface
         $this->role       = $data['role'];
 
         return $this;
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'email',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'EmailAddress'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'first_name',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'last_name',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'phone',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 10,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'status',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'role',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
     }
 }

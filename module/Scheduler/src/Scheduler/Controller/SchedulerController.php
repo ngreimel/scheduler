@@ -10,9 +10,10 @@ namespace Scheduler\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Scheduler\Entity\Appointment;
-use Scheduler\Form\AppointmentForm;
 use Doctrine\ORM\EntityManager;
+
+use Scheduler\Entity\Event;
+use Scheduler\Form\CreateEventForm;
 
 class SchedulerController extends AbstractActionController
 {
@@ -37,21 +38,30 @@ class SchedulerController extends AbstractActionController
         ));
     }
 
-    public function addAction()
+    public function createAction()
     {
-        $form = new AppointmentForm();
-        $form->get('submit')->setValue('Add');
+        // Get the ObjectManager
+        $objectManager = $this->getEntityManager();
 
+        // Create the form
+        $form = new CreateEventForm($objectManager);
+        $form->get('submit')->setValue('Create');
+
+        // Create a new, empty entity and bind it to the form
+        $event = new Event();
+        $form->bind($event);
+
+        // Load the request data
         $request = $this->getRequest();
+
+        // Quick check for form submission
         if ($request->isPost()) {
-            $appointment = new Appointment();
-            $form->setInputFilter($appointment->getInputFilter());
             $form->setData($request->getPost());
 
+            // Check for valid form
             if ($form->isValid()) {
-                $appointment->exchangeArray($form->getData());
-                $this->getEntityManager()->persist($appointment);
-                $this->getEntityManager()->flush();
+                $objectManager->persist($event);
+                $objectManager->flush();
 
                 // Redirect to index
                 return $this->redirect()->toRoute('scheduler');
@@ -63,32 +73,43 @@ class SchedulerController extends AbstractActionController
 
     public function editAction()
     {
+        // Load the event id
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute('scheduler', array(
                 'action' => 'add',
             ));
         }
-
-        $appointment = $this->getEntityManager()->find('Scheduler\Entity\Appointment', $id);
-        if (!$appointment) {
+        // Find the entity
+        $event = $objectManager->find('Scheduler\Entity\Event', $id);
+        if (!$event) {
             return $this->redirect()->toRoute('scheduler', array(
                 'action' => 'index',
             ));
         }
 
-        $form = new AppointmentForm();
-        $form->bind($appointment);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        // Get the ObjectManager
+        $objectManager = $this->getEntityManager();
 
+        // Create the form
+        $form = new UpdateEventForm($objectManager);
+        $form->get('submit')->setValue('Update');
+
+        // Bind the entity to the form
+        $form->bind($event);
+
+        // Load the request data
         $request = $this->getRequest();
+
+        // Quick check for form submission
         if ($request->isPost()) {
-            $form->setInputFilter($appointment->getInputFilter());
             $form->setData($request->getPost());
 
+            // Check for valid form
             if ($form->isValid()) {
-                $this->getEntityManager()->flush();
+                $objectManager->flush();
 
+                // Redirect to index
                 return $this->redirect()->toRoute('scheduler');
             }
         }

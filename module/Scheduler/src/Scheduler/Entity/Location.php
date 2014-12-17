@@ -9,10 +9,6 @@
 namespace Scheduler\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\Factory as InputFactory;
-use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
 
 /**
  * A location.
@@ -27,10 +23,8 @@ use Zend\InputFilter\InputFilterInterface;
  * @property text $access_type
  * @property text $access_info
  */
-class Location implements InputFilterAwareInterface
+class Location
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -120,144 +114,5 @@ class Location implements InputFilterAwareInterface
         $this->access_info = $data['access_info'];
 
         return $this;
-    }
-
-    public function setInputFilter(InputFilterInterface $inputFilter)
-    {
-        throw new \Exception('Not used');
-    }
-
-    public function getInputFilter()
-    {
-        if (!$this->inputFilter) {
-            $inputFilter = new InputFilter();
-
-            $inputFilter->add(array(
-                'name'     => 'id',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'street',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 255,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'city',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'state',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'zip',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 5,
-                            'max' => 12,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'access_type',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 45,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name'     => 'access_info',
-                'required' => false,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array('name' => 'NotEmpty'),
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'min' => 1,
-                            'max' => 255,
-                        ),
-                    ),
-                ),
-            ));
-
-
-            $this->inputFilter = $inputFilter;
-        }
-
-        return $this->inputFilter;
     }
 }
