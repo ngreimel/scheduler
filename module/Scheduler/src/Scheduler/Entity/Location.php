@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property text $access_type
  * @property text $access_info
  */
-class Location
+class Location extends Base
 {
     /**
      * @ORM\Id
@@ -62,57 +62,4 @@ class Location
      */
     protected $access_info;
 
-
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     * @return Location
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-        return $this;
-    }
-
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return Location
-     */
-    public function exchangeArray($data = array())
-    {
-        $this->id          = $data['id'];
-        $this->street      = $data['street'];
-        $this->city        = $data['city'];
-        $this->state       = $data['state'];
-        $this->zip         = $data['zip'];
-        $this->access_type = $data['access_type'];
-        $this->access_info = $data['access_info'];
-
-        return $this;
-    }
 }

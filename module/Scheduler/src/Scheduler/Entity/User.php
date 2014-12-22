@@ -23,10 +23,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int  $status
  * @property int  $role
  */
-class User
+class User extends Base
 {
-    protected $inputFilter;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
@@ -64,56 +62,12 @@ class User
      */
     protected $role;
 
-
     /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
+     * Set defaults
      */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     * @return User
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-        return $this;
-    }
-
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return User
-     */
-    public function exchangeArray($data = array())
-    {
-        $this->id         = $data['id'];
-        $this->email      = $data['email'];
-        $this->first_name = $data['first_name'];
-        $this->last_name  = $data['last_name'];
-        $this->phone      = $data['phone'];
-        $this->status     = $data['status'];
-        $this->role       = $data['role'];
+    public function __construct() {
+        $this->status = 2;
+        $this->role = 2;
 
         return $this;
     }

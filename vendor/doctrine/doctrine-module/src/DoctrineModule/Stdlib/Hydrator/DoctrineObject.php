@@ -183,9 +183,9 @@ class DoctrineObject extends AbstractHydrator
             $getter = 'get' . ucfirst($fieldName);
             $isser  = 'is' . ucfirst($fieldName);
 
-            if (in_array($getter, $methods)) {
+            if (is_callable(array($object, $getter))) {
                 $data[$fieldName] = $this->extractValue($fieldName, $object->$getter(), $object);
-            } elseif (in_array($isser, $methods)) {
+            } elseif (is_callable(array($object, $isser))) {
                 $data[$fieldName] = $this->extractValue($fieldName, $object->$isser(), $object);
             }
 
@@ -250,7 +250,7 @@ class DoctrineObject extends AbstractHydrator
                 $target = $metadata->getAssociationTargetClass($field);
 
                 if ($metadata->isSingleValuedAssociation($field)) {
-                    if (! method_exists($object, $setter)) {
+                    if (! is_callable(array($object, $setter))) {
                         continue;
                     }
 
@@ -267,7 +267,7 @@ class DoctrineObject extends AbstractHydrator
                     $this->toMany($object, $field, $target, $value);
                 }
             } else {
-                if (! method_exists($object, $setter)) {
+                if (! is_callable(array($object, $setter))) {
                     continue;
                 }
 

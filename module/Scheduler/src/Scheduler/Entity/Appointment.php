@@ -10,9 +10,6 @@ namespace Scheduler\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#use Scheduler\Entity\Location;
-#use Scheduler\Entity\User;
-
 /**
  * An appointment.
  *
@@ -24,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property Location $location
  * @property User     $user
  */
-class Appointment
+class Appointment extends Base
 {
     /**
      * @ORM\Id
@@ -44,64 +41,13 @@ class Appointment
     protected $work_description;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Location")
+     * @ORM\ManyToOne(targetEntity="Location", cascade={"persist"})
      */
     protected $location;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
      */
     protected $user;
 
-
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     * @return Appointment
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-        return $this;
-    }
-
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return Appointment
-     */
-    public function exchangeArray($data = array())
-    {
-        $this->id               = $data['id'];
-        $this->rei              = $data['rei'];
-        $this->work_description = $data['work_description'];
-        $this->location         = $data['location'];
-        $this->user             = $data['user'];
-
-        return $this;
-    }
 }

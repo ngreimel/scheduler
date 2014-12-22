@@ -13,7 +13,7 @@ $this->headTitle($title);
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
 <p>
-  <a href="<?php echo $this->url('scheduler', array('action' => 'add')); ?>">Add new appointment</a>
+  <a href="<?php echo $this->url('scheduler', array('action' => 'create')); ?>">Add new appointment</a>
 </p>
 
 <table class="table table-responsive table-hover">
@@ -28,15 +28,15 @@ $this->headTitle($title);
   </thead>
 
   <tbody>
-  <?php foreach ($appointments as $appointment): ?>
+  <?php foreach ($events as $event): ?>
     <tr>
-      <td><?php echo $appointment->id; ?></td>
-      <td><?php echo $appointment->date->format('Y-m-d'); ?></td>
-      <td><?php echo $appointment->time->format('g:i:s a'); ?></td>
-      <td><?php echo $appointment->event_id; ?></td>
+      <td><?php echo $event->id; ?></td>
+      <td><?php echo $event->date->format('Y-m-d'); ?></td>
+      <td><?php echo $event->time ? $event->time->format('g:i:s a') : ''; ?></td>
+      <td><?php echo $event->appointment->rei; ?></td>
       <td>
-        <a href="<?php echo $this->url('scheduler', array('action' => 'edit', 'id' => $appointment->id)); ?>">Edit</a>
-        <a href="<?php echo $this->url('scheduler', array('action' => 'delete', 'id' => $appointment->id)); ?>">Delete</a>
+        <a href="<?php echo $this->url('scheduler', array('action' => 'edit', 'id' => $event->id)); ?>">Edit</a>
+        <a href="<?php echo $this->url('scheduler', array('action' => 'delete', 'id' => $event->id)); ?>">Delete</a>
       </td>
     </tr>
   <?php endforeach; ?>

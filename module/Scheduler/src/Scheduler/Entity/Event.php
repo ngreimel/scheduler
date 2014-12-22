@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property Appointment $appointment
  * @property int         $status
  */
-class Event
+class Event extends Base
 {
     /**
      * @ORM\Id
@@ -47,7 +47,7 @@ class Event
     protected $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Appointment")
+     * @ORM\ManyToOne(targetEntity="Appointment", cascade={"persist"})
      */
     protected $appointment;
 
@@ -56,56 +56,31 @@ class Event
      */
     protected $status;
 
-
     /**
-     * Magic getter to expose protected properties.
+     * Return created_at date
      *
-     * @param string $property
-     * @return mixed
+     * @return \DateTime
      */
-    public function __get($property)
+    public function getCreated_at()
     {
-        return $this->$property;
+        if (!$this->created_at) {
+            $this->created_at = new \DateTime('now');
+        }
+
+        return $this->created_at;
     }
 
     /**
-     * Magic setter to save protected properties.
+     * Return status: (0 => canceled, 1 => active, 2 => pending, 3 => complete)
      *
-     * @param string $property
-     * @param mixed $value
-     * @return Event
+     * @return int
      */
-    public function __set($property, $value)
+    public function getStatus()
     {
-        $this->$property = $value;
-        return $this;
-    }
+        if (null === $this->status) {
+            $this->status = 2;
+        }
 
-    /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function getArrayCopy()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * Populate from an array.
-     *
-     * @param array $data
-     * @return Event
-     */
-    public function exchangeArray($data = array())
-    {
-        $this->id          = $data['id'];
-        $this->date        = new \DateTime($data['date']);
-        $this->time        = new \DateTime($data['time']);
-        $this->created_at  = new \DateTime($data['datetime']);
-        $this->appointment = $data['appointment'];
-        $this->status      = $data['status'];
-
-        return $this;
+        return $this->status;
     }
 }

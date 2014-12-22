@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityManager;
 
 use Scheduler\Entity\Event;
 use Scheduler\Form\CreateEventForm;
+use Scheduler\Form\UpdateEventForm;
 
 class SchedulerController extends AbstractActionController
 {
@@ -31,13 +32,19 @@ class SchedulerController extends AbstractActionController
         return $this->em;
     }
 
+    /**
+     * List all events
+     */
     public function indexAction()
     {
         return new ViewModel(array(
-            'appointments' => $this->getEntityManager()->getRepository('Scheduler\Entity\Appointment')->findAll(),
+            'events' => $this->getEntityManager()->getRepository('Scheduler\Entity\Event')->findAll(),
         ));
     }
 
+    /**
+     * Create an event
+     */
     public function createAction()
     {
         // Get the ObjectManager
@@ -71,6 +78,9 @@ class SchedulerController extends AbstractActionController
         return array('form' => $form);
     }
 
+    /**
+     * Edit an event
+     */
     public function editAction()
     {
         // Load the event id
@@ -80,6 +90,10 @@ class SchedulerController extends AbstractActionController
                 'action' => 'add',
             ));
         }
+
+        // Get the ObjectManager
+        $objectManager = $this->getEntityManager();
+
         // Find the entity
         $event = $objectManager->find('Scheduler\Entity\Event', $id);
         if (!$event) {
@@ -87,9 +101,6 @@ class SchedulerController extends AbstractActionController
                 'action' => 'index',
             ));
         }
-
-        // Get the ObjectManager
-        $objectManager = $this->getEntityManager();
 
         // Create the form
         $form = new UpdateEventForm($objectManager);
@@ -120,6 +131,9 @@ class SchedulerController extends AbstractActionController
         );
     }
 
+    /**
+     * Delete an event
+     */
     public function deleteAction()
     {
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -127,16 +141,19 @@ class SchedulerController extends AbstractActionController
             return $this->redirect()->toRoute('scheduler');
         }
 
+        // Get the ObjectManager
+        $objectManager = $this->getEntityManager();
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
 
             if ('Yes' == $del) {
                 $id = (int) $request->getPost('id');
-                $appointment = $this->getEntityManager()->find('Scheduler\Entity\Appointment', $id);
+                $appointment = $objectManager->find('Scheduler\Entity\Event', $id);
                 if ($appointment) {
-                    $this->getEntityManager()->remove($appointment);
-                    $this->getEntityManager()->flush();
+                    $objectManager->remove($appointment);
+                    $objectManager->flush();
                 }
             }
 
@@ -145,7 +162,7 @@ class SchedulerController extends AbstractActionController
 
         return array(
             'id' => $id,
-            'appointment' => $this->getEntityManager()->find('Scheduler\Entity\Appointment', $id),
+            'event' => $objectManager->find('Scheduler\Entity\Event', $id),
         );
     }
 }

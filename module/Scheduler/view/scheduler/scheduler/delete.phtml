@@ -19,12 +19,12 @@ $url = $this->url('scheduler', array(
 
 <p>
   Are you sure that you want to delete your appointment on
-  '<?php echo $appointment->date->format('Y-m-d') . ($appointment->time ? ' @ ' . $appointment->time->format('g:i:s a') : ''); ?>'?
+  '<?php echo $event->date->format('Y-m-d') . ($event->time ? ' @ ' . $event->time->format('g:i:s a') : ''); ?>'?
 </p>
 
 <form action="<?php echo $url; ?>" method="post" role="form">
   <div class="form-group">
-    <input type="hidden" name="id" value="<?php echo (int) $appointment->id; ?>" />
+    <input type="hidden" name="id" value="<?php echo (int) $event->id; ?>" />
     <button type="submit" name="del" class="btn btn-primary" value="Yes">Yes</button>
     <button type="submit" name="del" class="btn btn-default" value="No">No</button>
   </div>
