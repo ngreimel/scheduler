@@ -34,6 +34,9 @@ class LocationFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'Street address',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'street',
@@ -46,6 +49,9 @@ class LocationFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'City',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'city',
@@ -58,6 +64,9 @@ class LocationFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'State',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'state',
@@ -70,6 +79,9 @@ class LocationFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'ZIP',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'zip',
@@ -82,6 +94,9 @@ class LocationFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'Access Type',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'access_type',
@@ -94,6 +109,9 @@ class LocationFieldset
             'type' => 'Textarea',
             'options' => array(
                 'label' => 'Access Information',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'access_info',
@@ -123,7 +141,6 @@ class LocationFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 255,
                         ),
                     ),
@@ -141,7 +158,6 @@ class LocationFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),
@@ -159,7 +175,6 @@ class LocationFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),
@@ -195,7 +210,6 @@ class LocationFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),
@@ -213,7 +227,6 @@ class LocationFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 255,
                         ),
                     ),

@@ -34,6 +34,9 @@ class AppointmentFieldset
             'type' => 'Text',
             'options' => array(
                 'label' => 'REI #',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'rei',
@@ -46,6 +49,9 @@ class AppointmentFieldset
             'type' => 'TextArea',
             'options' => array(
                 'label' => 'Description of Work',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'work_description',
@@ -81,7 +87,6 @@ class AppointmentFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),
@@ -99,7 +104,6 @@ class AppointmentFieldset
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 255,
                         ),
                     ),

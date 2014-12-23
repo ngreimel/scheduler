@@ -15,29 +15,163 @@ $form->prepare();
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 
-<?php echo $this->form()->render($form); ?>
+<?php //echo $this->form()->render($form); ?>
 
-
-<?php /* ?>
+<div role="tabpanel">
 <?php echo $this->form()->openTag($form); ?>
 
-  <div class="row">
-    <div class="col-md-6">
-      <div class="form-group">
-        <?php echo $this->formHidden($form->get('id')); ?>
-        <?php echo $this->formRow($form->get('date')); ?>
+  <div class="tab-content">
+    <?php $event = $form->get('event'); ?>
+    <div role="tabpanel" class="tab-pane active" id="event">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <div class="form-group col-xs-6">
+              <?php echo $this->formHidden($event->get('id')); ?>
+              <?php echo $this->formRow($event->get('date')); ?>
+            </div>
+            <div class="form-group col-xs-6">
+              <?php echo $this->formRow($event->get('time')); ?>
+            </div>
+          </div>
+          <div class="form-group">
+            <a class="btn btn-primary tab" href="#appointment" aria-controls="appointment">Continue</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>Help?</h3>
+        </div>
       </div>
-      <div class="form-group">
-        <?php echo $this->formRow($form->get('time')); ?>
-      </div>
-      <div class="form-group">
-        <?php echo $this->formRow($form->get('event_id')); ?>
-      </div>
-      <?php echo $this->formSubmit($form->get('submit')); ?>
     </div>
-    <div class="col-md-6">
-      <h3>Help?</h3>
+
+    <?php $appointment = $event->get('appointment'); ?>
+    <div role="tabpanel" class="tab-pane" id="appointment">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <?php echo $this->formHidden($appointment->get('id')); ?>
+            <?php echo $this->formRow($appointment->get('rei')); ?>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($appointment->get('work_description')); ?>
+          </div>
+          <div class="form-group">
+            <a class="btn btn-primary tab" href="#location" aria-controls="location">Continue</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>Help?</h3>
+        </div>
+      </div>
     </div>
+
+    <?php $location = $appointment->get('location'); ?>
+    <div role="tabpanel" class="tab-pane" id="location">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <?php echo $this->formHidden($location->get('id')); ?>
+            <?php echo $this->formRow($location->get('street')); ?>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($location->get('city')); ?>
+          </div>
+          <div class="row">
+            <div class="form-group col-xs-6">
+              <?php echo $this->formRow($location->get('state')); ?>
+            </div>
+            <div class="form-group col-xs-6">
+              <?php echo $this->formRow($location->get('zip')); ?>
+            </div>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($location->get('access_type')); ?>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($location->get('access_info')); ?>
+          </div>
+          <div class="form-group">
+            <a class="btn btn-primary tab" href="#user" aria-controls="user">Continue</a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>Help?</h3>
+        </div>
+      </div>
+    </div>
+
+    <?php $user = $appointment->get('user'); ?>
+    <div role="tabpanel" class="tab-pane" id="user">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <?php echo $this->formHidden($user->get('id')); ?>
+            <?php echo $this->formRow($user->get('email')); ?>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($user->get('first_name')); ?>
+            <?php echo $this->formRow($user->get('last_name')); ?>
+          </div>
+          <div class="form-group">
+            <?php echo $this->formRow($user->get('phone')); ?>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h3>Help?</h3>
+        </div>
+      </div>
+    </div>
+
   </div>
+
 <?php echo $this->form()->closeTag(); ?>
-<?php */ ?>
+</div>
+
+<?php $this->inlineScript()->captureStart(); ?>
+(function ($) {
+  $('a.tab').click(function (e) {
+    e.preventDefault();
+    var $this      = $(this),
+        $form      = $('#create-event'),
+        fieldsetId = $this.closest('div[role="tabpanel"]').attr('id');
+    $.ajax({
+      dataType: 'json',
+      url: $form.attr('action') + '?id=' + fieldsetId,
+      data: $form.serialize()
+    })
+      .done(function (data) {
+        if (data && data.success) {
+          return $this.tab('show');
+        } else if (data && data.errors) {
+          $('.has-error', $('#' + fieldsetId)).removeClass('has-error');
+          $('.help-block', $('#' + fieldsetId)).remove();
+          errors = data.errors;
+          $('input,select,textarea', '#' + fieldsetId).each(function () {
+            var name = $(this).attr('name').replace(/\[/g, '.').replace(/\]/g, '');
+            var nameA = name.split('.');
+            for (var i in nameA) {
+              errors = errors[nameA[i]];
+            }
+            var msg = new Array;
+            for (var i in errors) {
+              msg.push(errors[i]);
+            }
+            if (msg.length) {
+              $(this).closest('.form-group').addClass('has-error');
+              $(this).after('<div class="help-block">' + msg.join('<br />') + '</div>');
+            }
+
+            errors = data.errors;
+          });
+        }
+      })
+      .fail(function (xhr, status, message) {
+        console.log({ xhr: xhr, status: status, message: message });
+        alert(status.toUpperCase() + ': ' + message);
+      });
+  });
+})(jQuery);
+<?php $this->inlineScript()->captureEnd(); ?>

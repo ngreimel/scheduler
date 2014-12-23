@@ -12,12 +12,12 @@
 
     <!-- Le styles -->
     <?php echo $this->headLink()
-                    ->prependStylesheet($this->cacheBust($this->basePath() . '/css/style.css'))
-                    ->prependStylesheet($this->cacheBust($this->basePath() . '/css/bootstrap.min.css'))
+                    ->prependStylesheet($this->cacheBust($this->basePath('css/style.css')))
+                    ->prependStylesheet($this->cacheBust($this->basePath('css/bootstrap.min.css')))
     ; ?>
 
     <!-- Scripts -->
-    <script src="<?php echo $this->cacheBust($this->basePath() . '/js/vendor/modernizr-2.8.3.min.js'); ?>"></script>
+    <script src="<?php echo $this->cacheBust($this->basePath('js/vendor/modernizr-2.8.3.min.js')); ?>"></script>
 
     <?php echo $this->headScript()
         ->prependFile('https://oss.maxcdn.com/respond/1.4.2/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
@@ -61,28 +61,17 @@
       </footer>
     </div> <!-- /container -->
 
-    <?php echo $this->inlineScript(); ?>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="<?php echo $this->cacheBust($this->basePath() . '/js/vendor/jquery-1.11.1.min.js'); ?>"><\/script>')</script>
-    <script src="<?php echo $this->cacheBust($this->basePath() . '/js/bootstrap.min.js'); ?>"></script>
-    <script src="<?php echo $this->cacheBust($this->basePath() . '/js/vendor/jquery.cookie-1.4.1.min.js'); ?>"></script>
-    <script src="<?php echo $this->cacheBust($this->basePath() . '/js/contact.js'); ?>"></script>
+    <script>window.jQuery || document.write('<script src="<?php echo $this->cacheBust($this->basePath('js/vendor/jquery-1.11.1.min.js')); ?>"><\/script>')</script>
+    <script src="<?php echo $this->cacheBust($this->basePath('js/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo $this->cacheBust($this->basePath('js/vendor/jquery.cookie-1.4.1.min.js')); ?>"></script>
+    <script src="<?php echo $this->cacheBust($this->basePath('js/contact.js')); ?>"></script>
     <!--[if lt IE 8]>
-    <script src="<?php echo $this->cacheBust($this->basePath() . '/js/browse.happy.js'); ?>"></script>
+    <script src="<?php echo $this->cacheBust($this->basePath('js/browse.happy.js')); ?>"></script>
     <![endif]-->
 
-    <script>
-jQuery('.box .info a.btn').each(function () {
-  var $this = $(this);
-  var $box = $(this).closest('.box');
-  var $icon = $('.box-icon span', $box)
-    .click(function () {
-      $this.click();
-    })
-    .css('cursor', 'pointer');
-});
-    </script>
+    <?php echo $this->inlineScript(); ?>
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

@@ -33,6 +33,9 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'text',
             'options' => array(
                 'label' => 'Email address',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'email',
@@ -45,6 +48,9 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'Text',
             'options' => array(
                 'label' => 'First name',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'first_name',
@@ -57,6 +63,9 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'Text',
             'options' => array(
                 'label' => 'Last name',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'last_name',
@@ -69,6 +78,9 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
             'type' => 'Text',
             'options' => array(
                 'label' => 'Phone #',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'phone',
@@ -109,7 +121,6 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),
@@ -127,7 +138,6 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                     array(
                         'name' => 'StringLength',
                         'options' => array(
-                            'min' => 1,
                             'max' => 45,
                         ),
                     ),

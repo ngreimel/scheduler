@@ -10,6 +10,7 @@ namespace Scheduler\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Doctrine\ORM\EntityManager;
 
 use Scheduler\Entity\Event;
@@ -61,8 +62,41 @@ class SchedulerController extends AbstractActionController
         // Load the request data
         $request = $this->getRequest();
 
+        // Quick check for ajax submission
+        if ($request->isXmlHttpRequest()) {
+            // Get the fieldset (subform) identifier
+            $fieldsetId = $request->getQuery('id', false);
+            if (!$fieldsetId) {
+                return new JsonModel(array(
+                    'message' => 'Unknown fieldset',
+                    'success' => false,
+                ));
+            }
+
+            // Load the data
+            $data = $request->getQuery();
+            $form->setData($data);
+            // Only validate current fieldset (subform)
+            $validate = $this->_findValidationSet($data, $fieldsetId);
+            $form->setValidationGroup($validate);
+
+            // Validate subform
+            if ($form->isValid()) {
+                return new JsonModel(array(
+                    'message' => 'Success',
+                    'success' => true,
+                ));
+            } else {
+                return new JsonModel(array(
+                    'message' => 'Invalid form',
+                    'errors'  => $form->getMessages(),
+                    'validate' => $validate,
+                    'success' => false,
+                ));
+            }
+
         // Quick check for form submission
-        if ($request->isPost()) {
+        } elseif ($request->isPost()) {
             $form->setData($request->getPost());
 
             // Check for valid form
@@ -164,5 +198,28 @@ class SchedulerController extends AbstractActionController
             'id' => $id,
             'event' => $objectManager->find('Scheduler\Entity\Event', $id),
         );
+    }
+
+    protected function _findValidationSet($data, $fieldset)
+    {
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveArrayIterator($data),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $key => $value) {
+            if ($key === $fieldset) {
+                $return = array(
+                    $key => array_keys(array_filter($value, function ($v) { return !is_array($v); })),
+                );
+                for ($i = $iterator->getDepth() - 1; $i >= 0; $i--) {
+                    $return = array(
+                        $iterator->getSubIterator($i)->key() => $return,
+                    );
+                }
+
+                return $return;
+            }
+        }
     }
 }

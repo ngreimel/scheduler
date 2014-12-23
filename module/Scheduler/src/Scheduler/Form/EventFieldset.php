@@ -34,6 +34,9 @@ class EventFieldset
             'type' => 'Date',
             'options' => array(
                 'label' => 'Date',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'date',
@@ -46,6 +49,9 @@ class EventFieldset
             'type' => 'Time',
             'options' => array(
                 'label' => 'Time',
+                'label_attributes' => array(
+                    'class' => 'control-label',
+                ),
             ),
             'attributes' => array(
                 'id'    => 'time',
