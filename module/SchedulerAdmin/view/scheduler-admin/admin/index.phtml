@@ -1,0 +1,116 @@
+<?php
+/**
+ * Scheduler Admin Module
+ *
+ * @author      Neal Greimel <neal@greimel.us>
+ * @copyright   Copyright (c) 2014 Neal Greimel (http://neal.greimel.us)
+ */
+
+$title = 'All appointments';
+$this->headTitle($title);
+
+$this->headLink()
+    ->prependStylesheet($this->cacheBust($this->basePath('css/admin/metisMenu.min.css')))
+    ->prependStylesheet($this->cacheBust($this->basePath('css/admin/timeline.css')))
+    ->prependStylesheet($this->cacheBust($this->basePath('css/admin/sb-admin-2.css')))
+    ->prependStylesheet($this->cacheBust($this->basePath('css/admin/morris.css')))
+    ;
+
+$this->inlineScript()
+    ->prependFile($this->cacheBust($this->basePath('js/admin/metisMenu.min.js')))
+    ->prependFile($this->cacheBust($this->basePath('js/admin/raphael-min.js')))
+    ->prependFile($this->cacheBust($this->basePath('js/admin/morris.min.js')))
+    ->prependFile($this->cacheBust($this->basePath('js/admin/morris-data.js')))
+    ->prependFile($this->cacheBust($this->basePath('js/admin/sb-admin-2.js')))
+    ;
+
+?>
+
+<div class="navbar-default sidebar" role="navigation">
+  <div class="sidebar-nav navbar-collapse">
+    <ul class="nav" id="side-menu">
+      <li class="sidebar-search">
+        <div class="input-group custom-search-form">
+          <input type="text" class="form-control" placeholder="Search..." />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button">
+              <i class="fa fa-search"></i>
+            </button>
+          </span>
+        </div>
+      </li>
+      <li>
+        <a href="<?php echo $this->url('admin'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="page-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header"><?php echo $this->escapeHtml($title); ?></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <i class="fa fa-clock-o fa-fw"></i> Calendar
+          <div class="pull-right">
+            <div class="btn-group">
+              <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                Actions <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu pull-right" role="menu">
+                <li>
+                  <a href="<?php echo $this->url('scheduler', array('action' => 'create')); ?>">Add new appointment</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Event Id</th>
+                      <th>&nbsp;</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                  <?php foreach ($events as $event): ?>
+                    <tr>
+                      <td><?php echo $event->id; ?></td>
+                      <td><?php echo $event->date->format('Y-m-d'); ?></td>
+                      <td><?php echo $event->time ? $event->time->format('g:i:s a') : ''; ?></td>
+                      <td><?php echo $event->appointment->rei; ?></td>
+                      <td>
+                        <a href="<?php echo $this->url('scheduler', array('action' => 'edit', 'id' => $event->id)); ?>">Edit</a>
+                        <a href="<?php echo $this->url('scheduler', array('action' => 'delete', 'id' => $event->id)); ?>">Delete</a>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-lg-8">
+              <div id="morris-bar-chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

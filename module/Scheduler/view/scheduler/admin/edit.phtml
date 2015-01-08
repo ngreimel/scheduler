@@ -1,0 +1,49 @@
+<?php
+/**
+ * Scheduler Module
+ *
+ * @author      Neal Greimel <neal@greimel.us>
+ * @copyright   Copyright (c) 2014 Neal Greimel (http://neal.greimel.us)
+ */
+
+$title = 'Edit appointment';
+$this->headTitle($title);
+
+$form->setAttribute('action', $this->url(
+    'scheduler',
+    array(
+        'action' => 'edit',
+        'id'     => $this->id,
+    )
+));
+$form->prepare();
+
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php echo $this->form()->render($form); ?>
+
+
+<?php /* ?>
+<?php echo $this->form()->openTag($form); ?>
+
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <?php echo $this->formHidden($form->get('id')); ?>
+        <?php echo $this->formRow($form->get('date')); ?>
+      </div>
+      <div class="form-group">
+        <?php echo $this->formRow($form->get('time')); ?>
+      </div>
+      <div class="form-group">
+        <?php echo $this->formRow($form->get('event_id')); ?>
+      </div>
+      <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+    <div class="col-md-6">
+      <h3>Help?</h3>
+    </div>
+  </div>
+<?php echo $this->form()->closeTag(); ?>
+<?php */ ?>

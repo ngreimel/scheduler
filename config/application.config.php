@@ -16,6 +16,7 @@ return array(
         'CacheBust',
         'Application',
         'Scheduler',
+        'SchedulerAdmin',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -36,7 +36,8 @@ body {
 .box-icon-red {
   background-color: #c64444;
 }
-.box-icon span {
+.box-icon > a,
+.box-icon > span {
   color: #fff;
   display: table-cell;
   text-align: center;
@@ -96,4 +97,8 @@ body {
 .carousel-indicators {
   bottom: 0px;
 }
-
+.carousel-inner {
+  width: 90%;
+  margin-left: 5%;
+  margin-rigth: 5%;
+}
