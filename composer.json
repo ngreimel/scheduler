@@ -31,6 +31,7 @@
         "zendframework/zendgdata": "2.*",
         "doctrine/doctrine-orm-module": "0.8.*",
         "doctrine/common": ">=2.1",
-        "bjyoungblood/bjy-profiler": "dev-master"
+        "bjyoungblood/bjy-profiler": "dev-master",
+        "evandotpro/edp-module-layouts": "dev-master"
     }
 }
