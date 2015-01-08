@@ -12,6 +12,7 @@ return array(
         'ZendDeveloperTools',
         'DoctrineModule',
         'DoctrineORMModule',
+        'EdpModuleLayouts',
         'LoremIpsum',
         'CacheBust',
         'Application',

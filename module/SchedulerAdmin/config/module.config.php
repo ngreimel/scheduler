@@ -38,8 +38,15 @@ return array(
         'template_path_stack' => array(
             'scheduler-admin' => __DIR__ . '/../view',
         ),
+        'template_map' => array(
+            'scheduler-admin' => __DIR__ . '/../view/layout/layout.phtml',
+        ),
         'strategies' => array(
             'ViewJsonStrategy',
         ),
+    ),
+
+    'module_layouts' => array(
+        __NAMESPACE__ => 'scheduler-admin',
     ),
 );

@@ -12,8 +12,12 @@
 
     <!-- Le styles -->
     <?php echo $this->headLink()
-                    ->prependStylesheet($this->cacheBust($this->basePath('css/style.css')))
-                    ->prependStylesheet($this->cacheBust($this->basePath('css/bootstrap.min.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/admin/metisMenu.min.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/admin/timeline.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/admin/sb-admin-2.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/admin/morris.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/style.css')))
+        ->prependStylesheet($this->cacheBust($this->basePath('css/bootstrap.min.css')))
     ; ?>
 
     <!-- Scripts -->
@@ -27,39 +31,57 @@
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand active" href="<?php echo $this->url('home'); ?>"><span class="fa fa-calendar"></span>&nbsp;Home</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php //echo $this->url('admin'); ?>"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Calendar</a></li>
-                <li><a href="#contactModal" data-toggle="modal"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;Contact</a></li>
-              </ul>
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand active" href="<?php echo $this->url('home'); ?>"><span class="fa fa-calendar"></span>&nbsp;Home</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="<?php //echo $this->url('admin'); ?>"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Calendar</a></li>
+              <li><a href="#contactModal" data-toggle="modal"><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;Contact</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+          <ul class="nav" id="side-menu">
+            <li class="sidebar-search">
+              <div class="input-group custom-search-form">
+                <input type="text" class="form-control" placeholder="Search..." />
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </li>
+            <li>
+              <a href="<?php echo $this->url('admin'); ?>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
             </li>
           </ul>
         </div>
       </div>
     </div>
 
+    <?php echo $this->content; ?>
+
+    <hr />
+
     <div class="container">
-      <?php echo $this->content; ?>
-
-      <hr />
-
       <footer>
         <p>Copyright &copy; <?php echo date('Y') ?> by Neal Greimel <?php echo $this->translate('All rights reserved.') ?></p>
       </footer>
-    </div> <!-- /container -->
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="<?php echo $this->cacheBust($this->basePath('js/vendor/jquery-1.11.1.min.js')); ?>"><\/script>')</script>
@@ -70,7 +92,13 @@
     <script src="<?php echo $this->cacheBust($this->basePath('js/browse.happy.js')); ?>"></script>
     <![endif]-->
 
-    <?php echo $this->inlineScript(); ?>
+    <?php echo $this->inlineScript()
+        ->prependFile($this->cacheBust($this->basePath('js/admin/metisMenu.min.js')))
+        ->prependFile($this->cacheBust($this->basePath('js/admin/raphael-min.js')))
+        ->prependFile($this->cacheBust($this->basePath('js/admin/morris.min.js')))
+        ->prependFile($this->cacheBust($this->basePath('js/admin/morris-data.js')))
+        ->prependFile($this->cacheBust($this->basePath('js/admin/sb-admin-2.js')))
+    ; ?>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
