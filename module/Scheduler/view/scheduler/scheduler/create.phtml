@@ -6,7 +6,7 @@
  * @copyright   Copyright (c) 2014 Neal Greimel (http://neal.greimel.us)
  */
 
-$title = 'Create new event';
+$title = 'Create new appointment';
 $this->headTitle($title);
 
 $form->setAttribute('action', $this->url('scheduler', array('action' => 'create')));
@@ -14,8 +14,6 @@ $form->prepare();
 
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-
-<?php //echo $this->form()->render($form); ?>
 
 <div role="tabpanel">
 <?php echo $this->form()->openTag($form); ?>
@@ -40,6 +38,13 @@ $form->prepare();
         </div>
         <div class="col-md-6">
           <h3>Help?</h3>
+          <div class="row">
+            <div class="col-xs-6">
+              <ul>
+                <li>Select a date from the calendar.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -61,6 +66,20 @@ $form->prepare();
         </div>
         <div class="col-md-6">
           <h3>Help?</h3>
+          <div class="row">
+            <div class="col-xs-6">
+              <ul>
+                <li>Your REI # is listed on your permit.</li>
+                <li>
+                  Be as descriptive as possible when detailing what needs
+                  to be inspected.
+                  <blockquote>
+                    New basement bathroom, rough-in
+                  </blockquote>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -91,11 +110,16 @@ $form->prepare();
             <?php echo $this->formRow($location->get('access_info')); ?>
           </div>
           <div class="form-group">
+            <input type="hidden" id="latitude" name="latitude" />
+            <input type="hidden" id="longitude" name="longitude" />
+            <input type="hidden" id="formatted_address" name="formatted_address" />
+
             <a class="btn btn-primary tab" href="#user" aria-controls="user">Continue</a>
           </div>
         </div>
         <div class="col-md-6">
           <h3>Help?</h3>
+          <div id="address-map" style="height:300px; width:100%; margin:0; padding:0;"></div>
         </div>
       </div>
     </div>
@@ -132,6 +156,7 @@ $form->prepare();
 
 <?php $this->headLink()->prependStylesheet($this->cacheBust($this->basePath('css/datepicker3.css'))); ?>
 <?php $this->inlineScript()->prependFile($this->cacheBust($this->basePath('js/vendor/datepicker/bootstrap-datepicker.js'))); ?>
+<?php $this->inlineScript()->prependFile('https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA4uB7zJ10o3KaTB7NQ0Cbj1wZNv2BOnZI'); ?>
 <?php $this->inlineScript()->captureStart(); ?>
 (function ($) {
   //$('label[for="date"], #date').hide();
@@ -203,5 +228,75 @@ $form->prepare();
         return false;
       });
   });
+
+  $('#street, #city, #state, #zip').on('blur', function () {
+    window.codeAddress();
+  });
 })(jQuery);
+
+var geocoder;
+var map;
+var marker;
+var geocoding = false;
+var initialize = function() {
+      geocoder = new google.maps.Geocoder();
+      var latlng = new google.maps.LatLng(44.89, -93.28);
+      var mapOptions = {
+        zoom: 8,
+        center: latlng
+      };
+      map = new google.maps.Map(document.getElementById('address-map'), mapOptions);
+    };
+var codeAddress = function() {
+  if (geocoding) {
+    return false;
+  }
+  geocoding = true;
+  var address = new Array(
+    document.getElementById('street').value,
+    document.getElementById('city').value,
+    document.getElementById('state').value,
+    document.getElementById('zip').value,
+    'USA'
+  );
+  geocoder.geocode({ 'address': address.join(', ') }, function (results, status) {
+    if (status == google.maps.GeocoderStatus.OK) {
+      document.getElementById('latitude').value = results[0].geometry.location.lat();
+      document.getElementById('longitude').value = results[0].geometry.location.lng();
+      document.getElementById('formatted_address').value = results[0].formatted_address;
+
+      map.setCenter(results[0].geometry.location);
+      map.setZoom(17);
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP,
+        position: results[0].geometry.location
+      });
+
+      google.maps.event.addListener(marker, 'dragend', dragMarker);
+
+      console.log(results[0]);
+    } else {
+      console.log(status);
+    }
+    geocoding = false;
+  });
+};
+
+var dragMarker = function () {
+  if (marker.getPosition()) {
+    console.log('Moved marker:', marker.getPosition());
+    geocoder.geocode({ 'location': marker.getPosition() }, function (results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        document.getElementById('latitude').value = results[0].geometry.location.lat();
+        document.getElementById('longitude').value = results[0].geometry.location.lng();
+        document.getElementById('formatted_address').value = results[0].formatted_address;
+      }
+    });
+  }
+};
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
 <?php $this->inlineScript()->captureEnd(); ?>

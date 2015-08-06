@@ -31,7 +31,7 @@ class UpdateEventForm extends Form
             'type' => 'submit',
             'attributes' => array(
                 'value' => 'Go',
-                'id' => 'submitbutton',
+                'id'    => 'submitbutton',
                 'class' => 'btn btn-primary',
             ),
         ));

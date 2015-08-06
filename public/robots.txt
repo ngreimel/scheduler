@@ -5,4 +5,4 @@ User-agent: *
 Disallow:
 
 # Sitemap
-Sitemap: http://www.nealgreimel.com/sitemap.xml
+Sitemap: http://scheduler.acmeloon.com/sitemap.xml
